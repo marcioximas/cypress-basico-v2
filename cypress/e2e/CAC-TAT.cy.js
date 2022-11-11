@@ -129,7 +129,7 @@ describe('Central de Atemdimento ao Cliente TAT', function() {
         
       })
     })
-    it('select with drag and drop file',function(){
+    it.only('select with drag and drop file',function(){
       cy.get('input[type="file"]')
       .should('not.have.value')
       .selectFile('./cypress/fixtures/example.json'),{action: 'drag-drop'}

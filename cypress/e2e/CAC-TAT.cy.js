@@ -2,16 +2,18 @@
 
 
 describe('Central de Atemdimento ao Cliente TAT', function() {
+  const THREE_SECONDS_IN_SECONDS = 3000
   beforeEach(function() {
     cy.visit('./src/index.html')
   });
-  it('Verifica o titulo da aplicacao',function() {
+  it('Verify Title of Web Aplication ',function() {
 
       
     cy.title().should('be.equal', 'Central de Atendimento ao Cliente TAT')
   })
 
-  it('Preenche os campos obrigatorios e envia o formulario',function() {
+  it('Fill the mandatory fields and send the form',function() {
+    cy.clock()
     cy.get('#firstName').type('Marcio')
     cy.get('#lastName').type('Coelho')
     cy.get('#email').type('ximas@ximas.com')
@@ -19,6 +21,9 @@ describe('Central de Atemdimento ao Cliente TAT', function() {
     cy.contains('button', 'Enviar').click()
 
     cy.get('.success').should('be.visible')
+
+    cy.tick(THREE_SECONDS_IN_SECONDS)
+    cy.get('.success').should('not.be.visible')
   })
   it('Valida email invalido',function() {
     cy.get('#firstName').type(0,'Marcio')
@@ -146,5 +151,24 @@ describe('Central de Atemdimento ao Cliente TAT', function() {
 
       cy.contains('Talking About Testing').should('be.visible')
       })
+
+    it.only('show and hide the message success and fail using .invoke',function(){
+        cy.get('.success')
+        .should('not.be.visible')
+        .invoke('show')
+        .should('be.visible')
+        .and('contain','Mensagem enviada com sucesso.')
+        .invoke('hide')
+        .should('not.be.visible')
+        cy.get('.error')
+        .should('not.be.visible')
+        .invoke('show')
+        .should('be.visible')
+        .and('contain','Valide os campos obrigatórios!')
+        .invoke('hide')
+        .should('not.be.visible')
+
+
+         })
 
   })
